@@ -4,13 +4,13 @@
   "description": "Интернет-магазин цифровой техники Сысоева Виталия",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npx react-scripts start",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "cd src && npx react-scripts build",
-    "sass": "sass src:src --watch"
-  },
+  "start": "node server.js",
+  "server": "nodemon server.js",
+  "client": "npx react-scripts start",
+  "dev": "concurrently \"npm run server\" \"npm run client\"",
+  "build": "npx react-scripts build",
+  "sass": "sass src:src --watch"
+},
   "dependencies": {
     "axios": "^1.7.9",
     "cors": "^2.8.5",
