@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+// Middleware
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:3001',
@@ -12,16 +13,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use((req, res, next) => {
-  res.on('finish', () => {
-    console.log(`[${new Date().toISOString()}] [${req.method}] ${res.statusCode} ${req.path}`);
-    if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-      console.log('Body:', req.body);
-    }
-  });
-  next();
-});
-
+// Начальные данные (10 товаров)
 let products = [
   { id: nanoid(6), name: 'Ноутбук ASUS ROG', category: 'Ноутбуки', description: 'Игровой ноутбук с RTX 4060, 16GB RAM', price: 120000, stock: 5 },
   { id: nanoid(6), name: 'Смартфон iPhone 15', category: 'Смартфоны', description: '128GB, черный, A16 Bionic', price: 89990, stock: 8 },
@@ -35,78 +27,76 @@ let products = [
   { id: nanoid(6), name: 'Роутер TP-Link Archer', category: 'Сетевое', description: 'WiFi 6, гигабитный', price: 7990, stock: 6 }
 ];
 
-function findProductOr404(id, res) {
-  const product = products.find(p => p.id === id);
-  if (!product) {
-    res.status(404).json({ error: "Product not found" });
-    return null;
-  }
-  return product;
-}
+// ===== МАРШРУТЫ =====
 
+// GET /api/products - получить все товары
 app.get('/api/products', (req, res) => {
+  console.log('GET /api/products - возвращаем товары');
   res.json(products);
 });
 
+// GET /api/products/:id - получить товар по ID
 app.get('/api/products/:id', (req, res) => {
-  const product = findProductOr404(req.params.id, res);
-  if (!product) return;
+  const product = products.find(p => p.id === req.params.id);
+  if (!product) {
+    return res.status(404).json({ error: 'Товар не найден' });
+  }
   res.json(product);
 });
 
+// POST /api/products - создать новый товар
 app.post('/api/products', (req, res) => {
   const { name, category, description, price, stock } = req.body;
   
-  if (!name?.trim() || !category?.trim() || !description?.trim() || 
-      price === undefined || stock === undefined) {
-    return res.status(400).json({ error: "Все поля обязательны" });
-  }
-
   const newProduct = {
     id: nanoid(6),
-    name: name.trim(),
-    category: category.trim(),
-    description: description.trim(),
-    price: Number(price),
-    stock: Number(stock)
+    name: name?.trim() || 'Без названия',
+    category: category?.trim() || 'Без категории',
+    description: description?.trim() || '',
+    price: Number(price) || 0,
+    stock: Number(stock) || 0
   };
 
   products.push(newProduct);
   res.status(201).json(newProduct);
 });
 
+// PATCH /api/products/:id - обновить товар
 app.patch('/api/products/:id', (req, res) => {
-  const product = findProductOr404(req.params.id, res);
-  if (!product) return;
+  const product = products.find(p => p.id === req.params.id);
+  if (!product) {
+    return res.status(404).json({ error: 'Товар не найден' });
+  }
 
   const { name, category, description, price, stock } = req.body;
   
-  if (name !== undefined) product.name = name.trim();
-  if (category !== undefined) product.category = category.trim();
-  if (description !== undefined) product.description = description.trim();
-  if (price !== undefined) product.price = Number(price);
-  if (stock !== undefined) product.stock = Number(stock);
+  if (name) product.name = name.trim();
+  if (category) product.category = category.trim();
+  if (description) product.description = description.trim();
+  if (price) product.price = Number(price);
+  if (stock) product.stock = Number(stock);
 
   res.json(product);
 });
 
+// DELETE /api/products/:id - удалить товар
 app.delete('/api/products/:id', (req, res) => {
   const exists = products.some(p => p.id === req.params.id);
-  if (!exists) return res.status(404).json({ error: "Product not found" });
+  if (!exists) {
+    return res.status(404).json({ error: 'Товар не найден' });
+  }
   
   products = products.filter(p => p.id !== req.params.id);
   res.status(204).send();
 });
 
-app.use((req, res) => {
-  res.status(404).json({ error: "Not found" });
-});
-
-app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
-  res.status(500).json({ error: "Internal server error" });
-});
-
+// Запуск сервера
 app.listen(PORT, () => {
-  console.log(`🚀 Сервер запущен на http://localhost:${PORT}`);
+  console.log(`✅ Сервер запущен на http://localhost:${PORT}`);
+  console.log(`📦 Доступные маршруты:`);
+  console.log(`   GET    /api/products`);
+  console.log(`   GET    /api/products/:id`);
+  console.log(`   POST   /api/products`);
+  console.log(`   PATCH  /api/products/:id`);
+  console.log(`   DELETE /api/products/:id`);
 });
