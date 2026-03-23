@@ -46,58 +46,58 @@ export default function ProductsPage() {
   };
 
   const handleDelete = async (id) => {
-    const ok = window.confirm('Удалить товар?');
-    if (!ok) return;
+    if (!window.confirm('Удалить товар?')) return;
 
     try {
       await api.deleteProduct(id);
       setProducts(prev => prev.filter(p => p.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Ошибка удаления товара');
+      alert('Ошибка удаления');
     }
   };
 
-  const handleSubmitModal = async (payload) => {
+  const handleSubmit = async (payload) => {
     try {
       if (modalMode === 'create') {
         const newProduct = await api.createProduct(payload);
         setProducts(prev => [...prev, newProduct]);
       } else {
-        const updatedProduct = await api.updateProduct(payload.id, payload);
-        setProducts(prev => prev.map(p => 
-          p.id === payload.id ? updatedProduct : p
-        ));
+        const updated = await api.updateProduct(payload.id, payload);
+        setProducts(prev => prev.map(p => p.id === payload.id ? updated : p));
       }
       closeModal();
     } catch (err) {
       console.error(err);
-      alert('Ошибка сохранения товара');
+      alert('Ошибка сохранения');
     }
   };
 
   return (
     <div className="page">
       <header className="header">
-        <div className="header__inner">
-          <div className="brand">⚡ Digital-store </div>
-          <div className="header__right">React + Express</div>
+        <div className="container header__inner">
+          <div className="logo">
+            <span className="logo__icon">💿</span>
+            <span className="logo__text">DigitalStore</span>
+          </div>
+          <div className="header__right">Цифровые товары</div>
         </div>
       </header>
 
       <main className="main">
         <div className="container">
           <div className="toolbar">
-            <h1 className="title">Каталог товаров ({products.length})</h1>
+            <h1 className="title">Каталог товаров</h1>
             <button className="btn btn--primary" onClick={openCreate}>
               + Добавить товар
             </button>
           </div>
 
           {loading ? (
-            <div className="empty">Загрузка...</div>
+            <div className="loading">Загрузка...</div>
           ) : (
-            <ProductsList 
+            <ProductsList
               products={products}
               onEdit={openEdit}
               onDelete={handleDelete}
@@ -107,8 +107,8 @@ export default function ProductsPage() {
       </main>
 
       <footer className="footer">
-        <div className="footer__inner">
-          © {new Date().getFullYear()} Digital-store. Все права защищены.
+        <div className="container footer__inner">
+          <p>© 2025 DigitalStore — Лицензионные цифровые товары</p>
         </div>
       </footer>
 
@@ -117,7 +117,7 @@ export default function ProductsPage() {
         mode={modalMode}
         initialProduct={editingProduct}
         onClose={closeModal}
-        onSubmit={handleSubmitModal}
+        onSubmit={handleSubmit}
       />
     </div>
   );

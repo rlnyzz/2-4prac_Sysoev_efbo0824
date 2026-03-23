@@ -1,13 +1,8 @@
-$bg: #0b0f19;
-$text: #e7eaf3;
-$border: rgba(255, 255, 255, 0.1);
+$bg: #0a0c15;
+$surface: #11151f;
+$border: rgba(255, 255, 255, 0.08);
 $primary: #6366f1;
-
-@mixin container($w: 1200px) {
-  max-width: $w;
-  width: 100%;
-  margin: 0 auto;
-}
+$text: #eef2ff;
 
 .page {
   min-height: 100vh;
@@ -18,60 +13,78 @@ $primary: #6366f1;
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
+.container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
 .header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid $border;
+  background: $surface;
+  padding: 16px 0;
 
   &__inner {
-    @include container();
-    padding: 16px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
-  .brand {
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
     font-weight: 700;
-    font-size: 1.5rem;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+
+    &__icon {
+      font-size: 28px;
+    }
+
+    &__text {
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+
+  &__right {
+    opacity: 0.7;
+    font-size: 14px;
   }
 }
 
 .main {
   flex: 1;
-  display: flex;
-}
-
-.container {
-  @include container();
-  padding: 20px;
+  padding: 40px 0;
 }
 
 .toolbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
-  
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+
   .title {
     margin: 0;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
   }
 }
 
 .btn {
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
   border: 1px solid $border;
   background: transparent;
   color: $text;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   transition: all 0.2s;
 
   &:hover {
@@ -83,29 +96,25 @@ $primary: #6366f1;
     border-color: $primary;
     
     &:hover {
-      background: rgba(99, 102, 241, 0.3);
+      background: rgba(99, 102, 241, 0.35);
     }
   }
 }
 
-.empty {
+.loading {
   text-align: center;
   padding: 60px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  border: 1px dashed $border;
-  color: rgba(255, 255, 255, 0.5);
+  background: $surface;
+  border-radius: 24px;
+  border: 1px solid $border;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
-
-  &__inner {
-    @include container();
-    padding: 20px;
-    text-align: center;
-    opacity: 0.7;
-    font-size: 14px;
-  }
+  border-top: 1px solid $border;
+  background: $surface;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.7;
 }

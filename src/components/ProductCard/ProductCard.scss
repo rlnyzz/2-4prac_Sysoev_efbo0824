@@ -1,108 +1,109 @@
 .product-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 20px;
-  transition: transform 0.2s;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   }
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-  }
-
-  .product-name {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  .product-category {
+  &__badge {
+    display: inline-block;
     background: rgba(99, 102, 241, 0.2);
     padding: 4px 10px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
+    margin-bottom: 12px;
     border: 1px solid rgba(99, 102, 241, 0.3);
   }
 
-  .product-description {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 16px;
-    min-height: 60px;
+  &__name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
   }
 
-  .product-details {
+  &__category {
+    font-size: 12px;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  &__description {
+    font-size: 13px;
+    opacity: 0.8;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    min-height: 54px;
+  }
+
+  &__footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-    padding: 12px 0;
+    padding-top: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 16px;
   }
 
-  .product-price {
-    font-size: 24px;
+  &__price {
+    font-size: 22px;
     font-weight: 700;
-    color: #6366f1;
+    color: #818cf8;
   }
 
-  .product-stock {
-    padding: 4px 12px;
+  &__stock {
+    font-size: 13px;
+    padding: 4px 10px;
+    background: rgba(34, 197, 94, 0.15);
     border-radius: 20px;
-    background: rgba(34, 197, 94, 0.2);
-    border: 1px solid rgba(34, 197, 94, 0.3);
-
-    &.low-stock {
+    
+    &.low {
       background: rgba(239, 68, 68, 0.2);
-      border-color: #ef4444;
       color: #f87171;
     }
   }
 
-  .product-actions {
+  &__actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     justify-content: flex-end;
   }
 
   .btn {
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     background: transparent;
-    color: #e7eaf3;
+    color: #eef2ff;
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s;
+    font-size: 13px;
+    transition: 0.2s;
 
     &:hover {
       background: rgba(255, 255, 255, 0.05);
     }
 
     &--edit {
-      background: rgba(99, 102, 241, 0.1);
-      border-color: rgba(99, 102, 241, 0.3);
+      background: rgba(99, 102, 241, 0.15);
+      border-color: #6366f1;
       
       &:hover {
-        background: rgba(99, 102, 241, 0.2);
+        background: rgba(99, 102, 241, 0.3);
       }
     }
 
-    &--danger {
-      background: rgba(239, 68, 68, 0.1);
-      border-color: rgba(239, 68, 68, 0.3);
+    &--delete {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
       
       &:hover {
-        background: rgba(239, 68, 68, 0.2);
+        background: rgba(239, 68, 68, 0.3);
       }
     }
   }

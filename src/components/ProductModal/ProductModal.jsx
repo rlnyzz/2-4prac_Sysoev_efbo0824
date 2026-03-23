@@ -7,7 +7,8 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
     category: '',
     description: '',
     price: '',
-    stock: ''
+    stock: '',
+    type: 'key'
   });
 
   useEffect(() => {
@@ -17,7 +18,8 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
         category: initialProduct.category || '',
         description: initialProduct.description || '',
         price: initialProduct.price || '',
-        stock: initialProduct.stock || ''
+        stock: initialProduct.stock || '',
+        type: initialProduct.type || 'key'
       });
     } else if (open) {
       setFormData({
@@ -25,7 +27,8 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
         category: '',
         description: '',
         price: '',
-        stock: ''
+        stock: '',
+        type: 'key'
       });
     }
   }, [open, initialProduct]);
@@ -46,19 +49,15 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
       alert('Введите категорию');
       return;
     }
-    if (!formData.description.trim()) {
-      alert('Введите описание');
-      return;
-    }
     
     const price = Number(formData.price);
-    if (!Number.isFinite(price) || price < 0) {
+    if (isNaN(price) || price < 0) {
       alert('Введите корректную цену');
       return;
     }
     
     const stock = Number(formData.stock);
-    if (!Number.isFinite(stock) || stock < 0) {
+    if (isNaN(stock) || stock < 0) {
       alert('Введите корректное количество');
       return;
     }
@@ -68,58 +67,64 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
       name: formData.name.trim(),
       category: formData.category.trim(),
       description: formData.description.trim(),
-      price: price,
-      stock: stock
+      price,
+      stock,
+      type: formData.type
     });
   };
 
   if (!open) return null;
 
-  const title = mode === 'edit' ? 'Редактировать товар' : 'Новый товар';
-
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal__header">
-          <h2>{title}</h2>
-          <button className="modal__close" onClick={onClose}>×</button>
+          <h2>{mode === 'edit' ? 'Редактировать товар' : 'Новый товар'}</h2>
+          <button className="modal__close" onClick={onClose}>✕</button>
         </div>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Название товара *</label>
+            <label>Название *</label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Например: Ноутбук ASUS"
+              placeholder="Например: Windows 11 Pro"
               autoFocus
-              required
             />
           </div>
           
-          <div className="form-group">
-            <label>Категория *</label>
-            <input
-              type="text"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              placeholder="Например: Ноутбуки"
-              required
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <label>Категория *</label>
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                placeholder="ОС / Софт / Игры"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Тип товара</label>
+              <select name="type" value={formData.type} onChange={handleChange}>
+                <option value="key">🔑 Лицензионный ключ</option>
+                <option value="subscription">📅 Подписка</option>
+              </select>
+            </div>
           </div>
           
           <div className="form-group">
-            <label>Описание *</label>
+            <label>Описание</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Подробное описание товара..."
+              placeholder="Описание товара..."
               rows="3"
-              required
             />
           </div>
           
@@ -131,10 +136,8 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                placeholder="1000"
+                placeholder="4990"
                 min="0"
-                step="1"
-                required
               />
             </div>
             
@@ -145,10 +148,8 @@ export default function ProductModal({ open, mode, initialProduct, onClose, onSu
                 name="stock"
                 value={formData.stock}
                 onChange={handleChange}
-                placeholder="10"
+                placeholder="100"
                 min="0"
-                step="1"
-                required
               />
             </div>
           </div>

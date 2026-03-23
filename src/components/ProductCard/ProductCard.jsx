@@ -4,25 +4,27 @@ import './ProductCard.scss';
 export default function ProductCard({ product, onEdit, onDelete }) {
   return (
     <div className="product-card">
-      <div className="product-card__header">
-        <h3 className="product-name">{product.name}</h3>
-        <span className="product-category">{product.category}</span>
+      <div className="product-card__badge">
+        {product.type === 'subscription' ? '📅 Подписка' : '🔑 Ключ'}
       </div>
       
-      <p className="product-description">{product.description}</p>
+      <h3 className="product-card__name">{product.name}</h3>
+      <span className="product-card__category">{product.category}</span>
       
-      <div className="product-details">
-        <div className="product-price">{product.price.toLocaleString()} ₽</div>
-        <div className={`product-stock ${product.stock < 5 ? 'low-stock' : ''}`}>
-          {product.stock} шт.
+      <p className="product-card__description">{product.description}</p>
+      
+      <div className="product-card__footer">
+        <div className="product-card__price">{product.price.toLocaleString()} ₽</div>
+        <div className={`product-card__stock ${product.stock < 10 ? 'low' : ''}`}>
+          📦 {product.stock} шт.
         </div>
       </div>
       
-      <div className="product-actions">
+      <div className="product-card__actions">
         <button className="btn btn--edit" onClick={() => onEdit(product)}>
-          ✏️ Ред.
+          ✏️ Редактировать
         </button>
-        <button className="btn btn--danger" onClick={() => onDelete(product.id)}>
+        <button className="btn btn--delete" onClick={() => onDelete(product.id)}>
           🗑️ Удалить
         </button>
       </div>
